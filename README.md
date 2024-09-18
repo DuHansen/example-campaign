@@ -34,5 +34,3 @@ You can place a test order using any US address and the Test Order Card details 
 
 ### PayPal
 For the test PayPal transactions, you can either use your own developer PayPal sandbox test account details (https://developer.paypal.com/tools/sandbox/), or use the following credentials:
-- Username: evenancio-merchant@gmail.com
-- Password: 12345678
