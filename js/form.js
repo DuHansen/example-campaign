@@ -306,3 +306,14 @@ Spreedly.on('paymentMethod', function(token, pmData) {
 });
 
 
+function toggleBillingAddress() {
+    const checkbox = document.getElementById('sameAddress');
+    const billingAddressDiv = document.getElementById('billingAddress');
+  
+    if (checkbox.checked) {
+      billingAddressDiv.style.display = 'none'; // Hide if checked
+    } else {
+      billingAddressDiv.style.display = 'block'; // Show if unchecked
+    }
+  }
+  

@@ -13635,6 +13635,7 @@ body {
 .step-title {
   font-size: 1.25rem;
   font-weight: 700;
+  margin-top: 10px;
 }
 
 .offer {
