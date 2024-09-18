@@ -1,43 +1,38 @@
-![c-api-git-hero](https://github.com/29next/example-campaign/assets/23140500/9b6bb450-7dd7-4de2-ae4a-bdc3b43c4bc9)
+Code Challenge - Step 1 of 5
+ 
 
 
+GitHub
+Please create a GitHub repository and share access with Evandro (evandro-peakonedev)
 
-# Example Campaign
+29 Next Account
 
-This is an example of a simple campaign that demostrates a straight forward integration with the [29next Campaigns App](https://developers.29next.com/docs/api/campaigns/)
+We've invited you to a sandbox account to build your first campaign. Please, check your email. You can access the sandbox by clicking on the link below.
 
-You can run these pages on a local server using this script and get real feedback from a test store on 29next
+https://t1b.29next.store/dashboard/
 
-```
-npm install
+We've added a basic catalogue to your store to use for testing.
 
-npm start
-```
+Campaigns API
 
-### Checkout page
+Please review the Campaigns API documentation:
+https://developers.29next.com/docs/api/campaigns/
 
-A basic offer select and order summary with the customer information form and payment options.
+[YOUR NAME] Example Campaign
 
-Contains an example of using the [Create Cart](https://developers.29next.com/docs/api/campaigns/#create-cart) method to capture basic user information before creating an order.
+We have created an example checkout for you to use with testing. Please refer to the README file for additional information.
 
-The example of the [Create Order](https://developers.29next.com/docs/api/campaigns/#create-order) method shows:
+https://github.com/peakonedev/example-campaign
 
-- An example of the required [iFrame Payment Form](https://developers.29next.com/docs/api/admin/guides/iframe-payment-form/) integration for Bankcard payments
-
-- Also shows an example of how to handle an example "APM Redirect Payment Flow" for paypal
-
-We are utilizing [Just Validate](https://just-validate.dev/) as an example of form validation
-
-You can use our [test cards](https://docs.29next.com/manage/orders/test-orders) to create a card order
-
-
-### Upsell page
-
-Demostrates a basic example of the [Retrieve Order Details](https://developers.29next.com/docs/api/campaigns/#adding-upsells) method to check if the choosen payment method supports post purchase upsells 
-
-As well as the [Create Upsell Order](https://developers.29next.com/docs/api/campaigns/#adding-upsells) method to show how to add post purchase upsells to an order if the payment method supports them
-
-
-### Thank You  / Confirmation page
-
-Shows an example of using the [Retrieve Order Details](https://developers.29next.com/docs/api/campaigns/#adding-upsells) method to map the values to the template to create an order summary for the customer.
+Code Challenge Step 1
+Fork his repository by clicking on “Use this template” > “Create a new repository”, so you can have a copy of the code in your own Github Account.
+Create a new branch called “step1”
+Connect the Example Campaign from GitHub to the [YOUR NAME] Example Campaign in the Campaigns App in your storefront (https://t1b.29next.store/dashboard/apps/campaigns/s/campaigns/)
+Create 2 Test Orders using a credit card as the payment method and 2 Test Orders with PayPal as the payment method. (A successful order will appear in your storefront here - https://t1b.29next.store/dashboard/orders/?status=open)
+Creditcard:
+You can place a test order using any US address and the Test Order Card details below.
+https://docs.29next.com/manage/orders/test-orders
+PayPal:
+When making the test paypal transactions - you can either use your own developer paypal sandbox test account details. (https://developer.paypal.com/tools/sandbox/). Or you can use
+un: evenancio-merchant@gmail.com
+pw: 12345678
