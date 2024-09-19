@@ -1,43 +1,15 @@
-![c-api-git-hero](https://github.com/29next/example-campaign/assets/23140500/9b6bb450-7dd7-4de2-ae4a-bdc3b43c4bc9)
+It should be checked on page load.
 
+When the user unchecks the checkbox the form should expand and show an additional set of form fields for the billing address, containing the same fields as the shipping address except the phone number and email fields.
 
+If the checkbox is unchecked, these billing address fields should be required and validated before a payment can be made, as are the customer information fields. Otherwise they are hidden and not required.
 
-# Example Campaign
+If the checkbox is unchecked you need to update the spreedly required first name and last name values to come from the billing address first name, last name fields. Otherwise they are to remain as the customer information form first name, last name fields.
 
-This is an example of a simple campaign that demostrates a straight forward integration with the [29next Campaigns App](https://developers.29next.com/docs/api/campaigns/)
+https://github.com/peakonedev/example-campaign/blob/main/js/form.js
 
-You can run these pages on a local server using this script and get real feedback from a test store on 29next
+If the checkbox is unchecked, the billing address form data should be captured and passed via the api in the billing address object - https://developers.29next.com/docs/api/campaigns/reference/#/operations/ordersCreate. Otherwise they are not captured and submitted.
 
-```
-npm install
+https://github.com/peakonedev/example-campaign/blob/0923a6eb94ab4d5d32495f622fbec34f78eeffc1/js/checkout.js#L113
 
-npm start
-```
-
-### Checkout page
-
-A basic offer select and order summary with the customer information form and payment options.
-
-Contains an example of using the [Create Cart](https://developers.29next.com/docs/api/campaigns/#create-cart) method to capture basic user information before creating an order.
-
-The example of the [Create Order](https://developers.29next.com/docs/api/campaigns/#create-order) method shows:
-
-- An example of the required [iFrame Payment Form](https://developers.29next.com/docs/api/admin/guides/iframe-payment-form/) integration for Bankcard payments
-
-- Also shows an example of how to handle an example "APM Redirect Payment Flow" for paypal
-
-We are utilizing [Just Validate](https://just-validate.dev/) as an example of form validation
-
-You can use our [test cards](https://docs.29next.com/manage/orders/test-orders) to create a card order
-
-
-### Upsell page
-
-Demostrates a basic example of the [Retrieve Order Details](https://developers.29next.com/docs/api/campaigns/#adding-upsells) method to check if the choosen payment method supports post purchase upsells 
-
-As well as the [Create Upsell Order](https://developers.29next.com/docs/api/campaigns/#adding-upsells) method to show how to add post purchase upsells to an order if the payment method supports them
-
-
-### Thank You  / Confirmation page
-
-Shows an example of using the [Retrieve Order Details](https://developers.29next.com/docs/api/campaigns/#adding-upsells) method to map the values to the template to create an order summary for the customer.
+As a reference you can view a demo campaign here - https://offer.sellmore.co/drone-hawk/en/us/checkout.html?bar=n&exit=n
