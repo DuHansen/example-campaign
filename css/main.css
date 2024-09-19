@@ -13635,6 +13635,7 @@ body {
 .step-title {
   font-size: 1.25rem;
   font-weight: 700;
+  margin-top: 10px;
 }
 
 .offer {
@@ -13841,3 +13842,4 @@ ul.up-list li {
   height: calc(3.5rem + 2px);
   line-height: 1.25;
 }
+
