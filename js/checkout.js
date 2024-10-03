@@ -180,63 +180,88 @@ const createOrder = async () => {
 /**
  * Use Create Order with PayPal
  */
+async function generateAccessToken() {
+    const clientId = 'AYmQiRqBuL90naL0Hari-Fdjtza_Ro8UuT1lEFhIFucanBpMgHUn-lZ10KZC5RsTNfb61EzWD-szBxA1';
+    const clientSecret = 'EC6oyzOeQQEStXA1G7GJMRquV8mRnM7EaCS5ePbOWd63fCNSO3F3xTK5eBGsgPxXKk_B5LE9m59nLHYx';
+    
+    const response = await fetch('https://api-m.sandbox.paypal.com/v1/oauth2/token', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/x-www-form-urlencoded',
+            'Authorization': 'Basic ' + btoa(`${clientId}:${clientSecret}`)
+        },
+        body: 'grant_type=client_credentials',
+    });
+
+    if (!response.ok) {
+        const errorData = await response.json();
+        console.error('Error generating access token:', errorData);
+        throw new Error('Error generating access token: ' + errorData.message);
+    }
+
+    const data = await response.json();
+    return data.access_token;
+}
 
 const createPayPalOrder = async () => {
-    console.log("Creating PayPal order...");
-    const formData = new FormData(formEl);
-    const data = Object.fromEntries(formData);
-    
-    // Disable the PayPal button to prevent multiple submissions
-    btnPaypal.disabled = true;
-
-    const orderPPData = {
-        user: {
-            first_name: data.first_name,
-            last_name: data.last_name,
-            email: data.email,
-        },
-        lines: lineArr,
-        payment_detail: {
-            payment_method: data.payment_method,
-        },
-        shipping_method: data.shipping_method,
-        success_url: campaign.nextStep(nextURL),
-    };
-
-    console.log("Order Data:", orderPPData);
-
     try {
-        const response = await fetch(ordersURL, {
+        const accessToken = await generateAccessToken();
+        console.log("Creating PayPal order...");
+
+        const formData = new FormData(formEl); 
+        const data = Object.fromEntries(formData);
+
+        btnPaypal.disabled = true;
+
+        let amountValue = calculateTotal();
+        amountValue = amountValue.toFixed(2); 
+
+        const orderPPData = {
+        intent: 'CAPTURE',
+        purchase_units: [
+            {
+            amount: {
+                currency_code: 'USD',
+                value: amountValue
+            }
+            }
+        ],
+        application_context: {
+            return_url: 'http://127.0.0.1:5500/upsell.html',
+            cancel_url: 'http://127.0.0.1:5500/cancel.html'
+        }
+        };
+
+        console.log("Order Data:", orderPPData);
+
+        const response = await fetch('https://api-m.sandbox.paypal.com/v2/checkout/orders', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
-                Accept: 'application/json',
-                Authorization: 'Bearer ojQkx0qVzFFTgHGtzRIMGxwstvf5QAfndrvwukzy', // Ensure proper token format
+                'Authorization': 'Bearer ' + accessToken,
             },
             body: JSON.stringify(orderPPData),
-            mode: 'no-cors'
         });
-        
+
         const result = await response.json();
 
         if (!response.ok) {
             console.error('Error creating PayPal order:', result);
-            handleError(result); // Call a function to display error messages
-            btnPaypal.disabled = false; // Re-enable the button
+            handleError(result);
+            btnPaypal.disabled = false;
             return;
         }
 
         console.log("PayPal order created successfully:", result);
         
-        sessionStorage.setItem('ref_id', result.ref_id);
+        sessionStorage.setItem('ref_id', result.id);
 
-        // Redirect to the payment URL
-        window.location.href = result.payment_complete_url;
+        window.location.href = result.links.find(link => link.rel === 'approve').href;
 
     } catch (error) {
         console.error('Error:', error);
         handleError({ message: 'An error occurred while creating the PayPal order.' });
-        btnPaypal.disabled = false; // Re-enable the button in case of error
+        btnPaypal.disabled = false;
     }
 };
 
@@ -260,6 +285,7 @@ const handleError = (result) => {
 // Retrieve the campaign data
 const retrieveCampaign = campaign.once(getCampaign);
 retrieveCampaign();
+
 
 /**
  * Use Create Create cart to capture prospect if email, first, and last names are valid
@@ -313,7 +339,6 @@ const renderPackages = () => {
                                 <span class="price-total"></span>
                             </div>
                         </div>
-                       
                     </div>
                     `;
 
@@ -360,19 +385,18 @@ const renderPackages = () => {
  * Calculate totals 
  */
 const calculateTotal = () => {
-
     let selectedPackage = document.querySelector(".offer.selected");
-    let packagePrice
-    let shippingPrice = selectedPackage.dataset.priceShipping
-
-    packagePrice = selectedPackage.dataset.priceTotal;
+    let packagePrice = selectedPackage.dataset.priceTotal;
+    let shippingPrice = selectedPackage.dataset.priceShipping;
 
     let checkoutTotal = parseFloat(packagePrice) + parseFloat(shippingPrice);
 
     let orderTotal = document.querySelector(".order-summary-total-value");
-
     orderTotal.textContent = campaign.currency.format(checkoutTotal);
+
+    return checkoutTotal; // Retorna o valor total
 }
+
 
 
 // 

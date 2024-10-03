@@ -8,7 +8,7 @@ const ordersURL = 'https://campaigns.apps.29next.com/api/v1/orders/'
 
 const headers = {
     'Content-Type': 'application/json',
-    'Authorization': publicKey
+    'Acccept': publicKey
 }
 
 const confirmationURL = "/thank-you.html";
