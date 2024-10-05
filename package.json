@@ -1,15 +1,14 @@
 {
   "name": "example-campaign",
   "version": "1.0.0",
-  "description": "An example of a simple campaign that demostrates the a straight forward integration with the 29next Campaigns App",
+  "description": "An example of a simple campaign that demonstrates a straightforward integration with the 29next Campaigns App",
   "main": "index.html",
   "scripts": {
-    "start": "npm run open",
-    "open": "concurrently \"http-server -p 8080\" \"open http://localhost:8080/\""
+    "start": "node index.js"
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/29next/example-campaign.git"
+    "url": "https://github.com/29next/example-campaign.git"
   },
   "author": "29next",
   "license": "MIT",
@@ -20,5 +19,10 @@
   "devDependencies": {
     "concurrently": "^8.2.0",
     "http-server": "^14.1.1"
+  },
+  "dependencies": {
+    "dotenv": "^16.4.5",
+    "express": "^4.21.0",
+    "node-fetch": "^3.3.2"
   }
 }

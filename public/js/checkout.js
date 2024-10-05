@@ -28,29 +28,24 @@ const btnCC = document.querySelector(".pay-with-cc");
 
 
 
-/**
- *  Get Campaign
- */
-
 const getCampaign = async () => {
     console.log("get campaign");
     try {
-
-        const response = await fetch(campaignRetrieveURL, {
+        const response = await fetch('/api/campaign', { // Use o endpoint do Express
             method: 'GET',
-            headers,
+            headers: {
+                Accept: 'application/json'
+            }
         });
-        const data = await response.json()
+        const data = await response.json();
 
         if (!response.ok) {
             console.log('Something went wrong');
             return;
         }
 
-        console.log(data)
-
-        getCampaignData(data);
-
+        console.log(data);
+        getCampaignData(data); // Supondo que você tenha uma função para processar os dados da campanha
 
     } catch (error) {
         console.log(error);
@@ -64,46 +59,43 @@ const getCampaignData = (data) => {
     Spreedly.init(payEnvKey, { "numberEl": "bankcard-number", "cvvEl": "bankcard-cvv" });
 }
 
-/**
- *  Create Cart / New Prospect
- */
-
 const createCart = async () => {
-
-    console.log("create prospect");
     const formData = new FormData(formEl);
     const data = Object.fromEntries(formData);
 
-    console.log(data);
-
     const cartData = {
-        "user": {
-            "first_name": data.first_name,
-            "last_name": data.last_name,
-            "email": data.email
+        user: {
+            first_name: data.first_name,
+            last_name: data.last_name,
+            email: data.email
         },
-        "lines": lineArr
-    }
+        lines: lineArr // Certifique-se de que `lineArr` está definido e não é vazio
+    };
 
     try {
-        const response = await fetch(cartsCreateURL, {
+        const response = await fetch('/api/cart', {
             method: 'POST',
-            headers,
+            headers: {
+                'Content-Type': 'application/json',
+                Accept: 'application/json'
+            },
             body: JSON.stringify(cartData),
         });
-        const result = await response.json()
+
+        const result = await response.json();
 
         if (!response.ok) {
-            console.log('Something went wrong');
+            console.log('Something went wrong:', result);
             return;
         }
 
-
+        console.log('Carrinho criado com sucesso:', result);
     } catch (error) {
-        console.log(error);
-
+        console.log('Erro ao criar o carrinho:', error);
     }
-}
+};
+
+
 
 
 /**
@@ -154,9 +146,12 @@ const createOrder = async () => {
     console.log(orderData);
 
     try {
-        const response = await fetch(ordersURL, {
+        const response = await fetch('/api/order', {
             method: 'POST',
-            headers,
+            headers: {
+                'Content-Type': 'application/json',
+                Accept: 'application/json'
+              },
             body: JSON.stringify(orderData),
         });
         const result = await response.json()
@@ -260,9 +255,13 @@ const createPayPalOrder = async () => {
     }
 
     try {
-        const response = await fetch(ordersURL, {
+        const response = await fetch('/api/order', {
             method: 'POST',
-            headers,
+            headers: {
+                'Content-Type': 'application/json',
+                Accept: 'application/json',
+                Authorization: 'ojQkx0qVzFFTgHGtzRIMGxwstvf5QAfndrvwukzy'
+              },
             body: JSON.stringify(orderPPData),
         });
         const result = await response.json()
